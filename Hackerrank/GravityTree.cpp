@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <cassert>
 using namespace std;
 
 struct Node
@@ -15,7 +16,9 @@ struct Node
 
 int findDistance(Node *U, Node *V)
 {
-	int d1 = 0;
+	int d1=0,d2=0;
+	assert(U!=NULL);
+	assert(V!=NULL);
 	if(V==U)
 		return d1;
 	Node *temp = V->parent;
@@ -31,7 +34,6 @@ int findDistance(Node *U, Node *V)
 	}
 	int n=listPV.size();
 	Node *temp2 = U->parent;
-	int d2 = 0;
 	while(temp2!=NULL)
 	{
 		d2++;
