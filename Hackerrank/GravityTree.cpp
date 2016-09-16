@@ -11,43 +11,7 @@ struct Node
 	Node *leftC = NULL;
 	Node *rightS = NULL;
 	Node *parent = NULL;
-	bool status = false;//OFF
 };
-
-void resetTree(Node *node)
-{
-	node->status = false;
-	Node *temp = node->rightS;
-	while(temp!=NULL)
-	{
-		temp->status=false;
-		temp = temp->rightS;
-	}
-	do
-	{
-		if(node->leftC!=NULL)
-			resetTree(node->leftC);
-		node=node->rightS;
-	}while(node!=NULL);
-
-}
-
-void activateSubTreeV(Node *node)
-{
-	node->status = true;
-	Node *temp = node->rightS;
-	while(temp!=NULL)
-	{
-		temp->status = true;
-		temp=temp->rightS;
-	}
-	do
-	{
-		if(node->leftC!=NULL)
-			activateSubTreeV(node->leftC);
-		node = node->rightS;
-	}while(node!=NULL);
-}
 
 int findDistance(Node *U, Node *V)
 {
@@ -58,9 +22,9 @@ int findDistance(Node *U, Node *V)
 	std::vector<int> listPV;
 	while(temp!=NULL)
 	{
+		d1++;
 		listPV.push_back(temp->vertex);
 		listPV.push_back(d1);
-		d1++;
 		if(temp==U)
 			return d1;
 		temp=temp->parent;
@@ -92,6 +56,7 @@ void findForce(Node *U, Node *V, unsigned long long &force)
 	Node *temp = V->rightS;
 	while(temp!=NULL)
 	{
+		int d = findDistance(U,temp);
 		force+=d*d;
 		temp=temp->rightS;
 	}
@@ -121,7 +86,7 @@ Node * find(int v, Node *temp)
 		if(temp->leftC!=NULL)
 		{
 			temp2=find(v,temp->leftC);
-			if(temp2->vertex==v)
+			if(temp2!=NULL && temp2->vertex==v)
 				return temp2;
 		}
 		temp=temp->rightS;
@@ -172,14 +137,10 @@ int main() {
 		int u,v;
 		cin>>u>>v;
 		unsigned long long force = 0;
-		resetTree(root);
 		Node *nodeU;
 		Node *nodeV;
 		nodeV = find(v,root);
 		nodeU = find(u,root);
-		nodeV->status=true;
-		if(nodeV->leftC!=NULL)
-			activateSubTreeV(nodeV->leftC);
 		int d = findDistance(nodeU, nodeV);
 		force+=d*d;
 		if(nodeV->leftC!=NULL)
