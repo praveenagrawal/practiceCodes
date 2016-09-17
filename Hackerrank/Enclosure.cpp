@@ -3,55 +3,70 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <iomanip>
 using namespace std;
 
 #define PI 3.14159265
+
+struct point
+{
+	double x;
+	double y;
+};
 
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
     int n;
     cin>>n;
-    std::vector<int> L(n);
-    int Lmax = 0;
+    std::vector<double> L(n);
+    double Lmax = 0.0;
     for(int i=0;i<n;i++)
 	{
 		cin>>L[i];
 		if(L[i]>Lmax)
 			Lmax = L[i];
 	}
-	float Rn = 0, Rn1=Lmax;
-	while(abs(Rn-Rn1)>0.0001)
+	std::vector<point> points(n);
+	points[0].x = 0.0;
+	points[0].y = 0.0;
+	points[1].x = 0.0;
+	points[1].y = L[0];
+	double R = Lmax, oldR = 0;
+	double low = 0, high = 2*n*R;
+	while(true)
 	{
-		Rn=Rn1;
-		float numerator = 0, denominator = 0;
+		double sumAngle = 0.0;
 		for(int i=0;i<n;i++)
+			sumAngle+= 2*asin(L[i]/(2*R));
+		if(abs(R-oldR)<=0.000000001)
+			break;
+		else if(sumAngle<2*PI)
 		{
-			numerator+= asin(L[i]/(2*Rn));
-			denominator+= L[i]/(sqrt(4*Rn*Rn-L[i]*L[i]));
+			high = R;
+			oldR = R;
+			R = (low+R)/2.0;
+		}	
+		else
+		{
+			low = R;
+			oldR = R;
+			R = (high+R)/2.0;
 		}
-		denominator/=Rn;
-		numerator-= PI;
-		cout<<numerator<< "                 "<<denominator<<endl;
-		Rn1 = Rn -(numerator/denominator);
-		cout<<Rn1<<endl;
 	}
-	cout<<Rn1<<"  rfkr";
-	/*float Rn_1 = 1.01*Lmax, Rn = Lmax, Rn1 = Lmax, fn_1=0;
-	for(int i=0;i<n;i++)
-		fn_1+= asin(L[i]/(2*Rn_1));
-	while(abs(Rn1-Rn_1)>0.0001)
+	point circumCenter;
+	circumCenter.x = sqrt(R*R-L[0]*L[0]/4.0);
+	circumCenter.y = L[0]/2.0;
+	for(int i=2;i<=n;i++)
 	{
-		float numerator = 0, denominator = 0, fn = 0;
-		for(int i=0;i<n;i++)
-			fn+= asin(L[i]/(2*Rn));
-		denominator = (fn-fn_1)/(Rn-Rn_1);
-		cout<<fn<< "                 "<<denominator<<endl;
-		Rn1 = Rn - fn/denominator;
-		cout<<Rn1<<endl;
-		fn_1 = fn;
-		Rn_1 = Rn;
-		Rn=Rn1;
-	}*/
+		double theta = acos((2.0*R*R - L[i-1]*L[i-1])/(2.0*R*R));
+		points[i].x = (points[i-1].x - circumCenter.x)*cos(theta) + (points[i-1].y - circumCenter.y)*sin(theta) + circumCenter.x;
+		points[i].y = -(points[i-1].x - circumCenter.x)*sin(theta) + (points[i-1].y- circumCenter.y)*cos(theta)+ circumCenter.y;
+	}
 
+	for(int i=0;i<n;i++)
+	{
+		cout<< (fixed) << setprecision(6) <<points[i].x<<endl;
+		cout<< (fixed) << setprecision(6) <<points[i].y<<endl<<endl;
+	}
     return 0;
 }
