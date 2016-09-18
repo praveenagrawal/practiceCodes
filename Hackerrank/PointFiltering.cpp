@@ -54,18 +54,10 @@ void mergeSort(std::vector<tupleK> &A, int s, int e)
 	}
 }
 
-
-int main() {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
-    int n,b;
-    cin>>n>>b;
-    std::vector<tupleK> A(n);
-    for(int i=0;i<n;i++)
-	{
-		cin>>A[i].k>>A[i].x>>A[i].y>>A[i].z;
-	}
-	mergeSort(A, 0, n-1);
-	/*for(int i=0;i<n-1;i++)
+void bLargest(std::vector<tupleK> &A, int b)
+{
+	int n = A.size();
+	for(int i=0;i<b;i++)
 	{
 		int maxIndex = i;
 		for(int j=i+1;j<n;j++)
@@ -76,7 +68,34 @@ int main() {
 		tupleK temp = A[i];
 		A[i] = A[maxIndex];
 		A[maxIndex] = temp;
-	}*/
+	}
+}
+
+void nextLargest(std::vector<tupleK> &A, int b)
+{
+	int n = A.size();
+	int maxIndex = b-1,i;
+	for(i=b;i<n;i++)
+	{
+		if(A[i].z>A[maxIndex].z)
+			maxIndex = i;
+	}
+	tupleK temp = A[b-1];
+	A[b-1] = A[maxIndex];
+	A[maxIndex] = temp;
+}
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    int n,b;
+    cin>>n>>b;
+    std::vector<tupleK> A(n);
+    for(int i=0;i<n;i++)
+	{
+		cin>>A[i].k>>A[i].x>>A[i].y>>A[i].z;
+	}
+	//mergeSort(A, 0, n-1);
+	bLargest(A,b);
 	string s;
 	while(!cin.eof())
 	{
@@ -108,6 +127,7 @@ int main() {
 					{
 						A.erase(A.begin()+i);
 						cout<<"Point id "<<k<<" removed.\n";
+						nextLargest(A,b);
 						break;
 					}
 					else if(A.size()==b)
