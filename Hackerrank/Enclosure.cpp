@@ -53,12 +53,17 @@ int main() {
 			R = (high+R)/2.0;
 		}
 	}
+	cout<<R<<endl;
 	point circumCenter;
 	circumCenter.x = sqrt(R*R-L[0]*L[0]/4.0);
 	circumCenter.y = L[0]/2.0;
 	for(int i=2;i<=n;i++)
 	{
-		double theta = acos((2.0*R*R - L[i-1]*L[i-1])/(2.0*R*R));
+		double theta;
+		if((2.0*R*R - L[i-1]*L[i-1])/(2.0*R*R)<-1)
+			theta = acos(-1);
+		else
+			theta = acos((2.0*R*R - L[i-1]*L[i-1])/(2.0*R*R));
 		points[i].x = (points[i-1].x - circumCenter.x)*cos(theta) + (points[i-1].y - circumCenter.y)*sin(theta) + circumCenter.x;
 		points[i].y = -(points[i-1].x - circumCenter.x)*sin(theta) + (points[i-1].y- circumCenter.y)*cos(theta)+ circumCenter.y;
 	}
