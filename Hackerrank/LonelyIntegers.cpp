@@ -19,7 +19,7 @@ using namespace std;
 int lonelyinteger(vector < int > a) 
 {
     int n = a.size();
-    std::vector<char> temp(101,0);
+    std::vector<int> temp(101,0);
     for(int i=0;i<n;i++)
     {
         temp[a[i]]++;
