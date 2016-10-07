@@ -13,9 +13,9 @@ int main() {
     std::vector<int> coins(m);
     for(int i=0;i<m;i++)
     	cin>>coins[i];
-	std::vector<int> table(n+1,0);    
+	std::vector<unsigned long long> table(n+1,0);    
 	table[0] = 1;
-    for(int i=0;i<n+1;i++)
+    for(int i=0;i<m;i++)
 	{
 		for(int j=coins[i];j<=n;j++)
 		{
