@@ -19,9 +19,9 @@ void MinHeapify(std::vector<int> Q, int i, std::vector<node> &graph)
 	int r = 3*i;
 	int min = i;
 	int n = Q.size();
-	if(l<n && Q[l]<Q[i])
+	if(l<n && graph[Q[l]].d < graph[Q[i]].d)
 		min = l;
-	if(r<n && Q[r]<Q[min])
+	if(r<n && graph[Q[r]].d < graph[Q[min]].d)
 		min = r;
 	if(min!=i)
 	{
@@ -39,8 +39,8 @@ int ExtractMin(std::vector<int> &Q, std::vector<node> &graph)
 		return -1;
 	int min = Q[0];
 	Q[0] = Q[n-1];
-	MinHeapify(Q, 0, graph);
 	Q.erase(Q.end()-1);
+	MinHeapify(Q, 0, graph);
 	return min;
 }
 
@@ -49,7 +49,7 @@ void Relax(int u, int v, std::vector<node> &graph, int w, std::vector<int> &Q)
 	if(graph[v].d>graph[u].d + w)
 	{
 		graph[v].d = graph[u].d + w;
-		while(v>=0 && Q[v/2]>Q[v])
+		while(v>=0 && graph[Q[v/2]].d > graph[Q[v]].d)
 		{
 			int temp = Q[v/2];
 			Q[v/2] = Q[v];
