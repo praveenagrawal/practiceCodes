@@ -25,26 +25,14 @@ int main() {
 			continue;
 		}
 		ull temp = n-minSum;
-		ull temp2;
-		temp2 = temp/b;
-		int r = temp%b;
 		int i;
-		for(i=1;i<b;i++)
+		for(i=b;i>1;i--)
 		{
-			if(r==0)
-				cout<<i+temp2<<" ";
-			else
-			{
-				if(i>b-r)
-					cout<<i+temp2+1<<" ";
-				else
-					cout<<i+temp2<<" ";
-			}
+			ull t2 = (temp<(k-(b-i)-i))?temp:k-(b-i)-i;
+			cout<<i+t2<<" ";
+			temp-=t2;
 		}
-		if(i>b-r)
-			cout<<i+temp2+1;
-		else
-			cout<<i+temp2;
+		cout<<i+temp;
 		if(t!=0)
 			cout<<endl;
 	}
