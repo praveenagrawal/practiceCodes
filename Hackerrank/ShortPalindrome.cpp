@@ -35,7 +35,7 @@ int main() {
 		}
 	}
 	for(int i=1;i<n-3;i++)
-	{
+	{	
 		for(int k=0;k<26;k++)
 			count = (count + preList[s[i]][k]*postList[s[i]-'a'][k])%(1000000007);
 		for(int j=0;j<26;j++)
