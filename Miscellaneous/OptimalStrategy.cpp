@@ -19,9 +19,11 @@ int maxMoney(vi &A, std::vector<vi> &dp, int i1, int i2)
 	if(dp[i1][i2]!= -1)
 		return dp[i1][i2];
 	int x=0, y=0, z=0;
-	x = (i1+2<=i2)?(maxMoney(A,dp,i1+2,i2)):INT_MAX;
-	y = (i1+1<=i2-1)?(maxMoney(A,dp, i1+1, i2-1)):INT_MAX;
-	z = (i1<=i2-1)?(maxMoney(A,dp,i1,i2-2)):INT_MAX;
+	
+	x = maxMoney(A,dp,i1+2,i2);
+	y = maxMoney(A,dp, i1+1, i2-1);
+	z = maxMoney(A,dp,i1,i2-2);
+
 	dp[i1][i2] = max(A[i1] + min(x,y), A[i2] + min(y,z));
 	return dp[i1][i2];
 }
