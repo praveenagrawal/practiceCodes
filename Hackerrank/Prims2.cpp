@@ -7,6 +7,7 @@
 #include <limits.h>
 using namespace std;
 
+typedef pair<int, int> ipair;
 
 struct node
 {
@@ -19,9 +20,9 @@ struct node
 
 struct compare
 {
-  bool operator()(const node l, const node r)
+  bool operator()(const pair<int, int> l, const pair<int, int> r)
   {
-      return (l.key > r.key);
+      return (l.second > r.second);
   }
 };
 
@@ -30,7 +31,7 @@ int main() {
     int n, m;
     cin>>n>>m;
     std::vector<node> graph(n);
-    priority_queue<node,vector<node>, compare > Q;
+    priority_queue<ipair,vector<ipair>, compare > Q;
     std::vector<bool> inMST(n, 0);
     for(int i=0;i<m;i++)
 	{
@@ -48,21 +49,21 @@ int main() {
 	cin>>s;
 	s--;
 	graph[s].key = 0;
-	Q.push(graph[s]);
+	Q.push(make_pair(s, graph[s].key));
 	unsigned long long total = 0;
 	while(Q.size()!=0)
 	{
-		node u = Q.top();
+		int u = Q.top().first;
 		Q.pop();
-		inMST[u.v] = 1;
-		for(int i=0;i<u.adj.size();i++)
+		inMST[u] = 1;
+		for(int i=0;i<graph[u].adj.size();i++)
 		{
-			int v = u.adj[i];
-			if(inMST[v]==0 && u.w[i]<graph[v].key)
+			int v = graph[u].adj[i];
+			if(inMST[v]==0 && graph[u].w[i]<graph[v].key)
 			{
-				graph[v].key = u.w[i];
-				graph[v].parent = u.v;
-				Q.push(graph[v]);
+				graph[v].key = graph[u].w[i];
+				graph[v].parent = graph[u].v;
+				Q.push(make_pair(v, graph[v].key));
 			}
 		}
 	}
