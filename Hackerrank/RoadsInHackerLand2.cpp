@@ -80,11 +80,15 @@ void joinS(string &s, string &t)
 int updateChildren(std::vector<node> &graph, int root)
 {
 	int n = graph[root].adj.size();
+	std::vector<bool> visited(100000, 0);
 	for(int i=0;i<n;i++)
 	{
 		int v = graph[root].adj[i].first;
-		if(graph[v].parent==root)
+		if(graph[v].parent==root && visited[v]==0)
+		{
 			graph[root].children+= updateChildren(graph, graph[root].adj[i].first)+1;
+			visited[v] = 1;
+		}
 	}
 	return graph[root].children;
 }
@@ -131,29 +135,36 @@ int main()
 		}
 	}
 	updateChildren(graph, 0);
-	std::vector<int> result;
+	std::vector<long long> cnt(200002, 0);
+	int maxIndex = 0;
 	for(int i=1;i<n;i++)
 	{
 		int c = graph[i].children+1;
-		//result+= pow(2, graph[i].key)*((n-c)*c);
-		for(int j=0;j<(n-c)*c;j++)
-			result.push_back(graph[i].key);
+		cnt[graph[i].key]+= (long long)c * (n - c);
+		maxIndex = max(maxIndex, graph[i].key);
 	}
-
-
-
-	//for(int i=0;i<result.size();i++)
-	//	cout<<result[i]<<endl;
-	string ans = "0";
-	unsigned long long ans1 = 0;
-	for(int i=0;i<result.size();i++)
+	for(int i=0;i<=maxIndex;i++)
 	{
-		string temp = "1";
-		for(int j=0;j<result[i];j++)
-			temp+= "0";
-		ans1+= pow(2, result[i]);
-		joinS(ans, temp);
+		cnt[i+1]+= cnt[i]/2;
+		cnt[i] = cnt[i]%2;
 	}
-	cout<<ans<<endl;
-	cout<<ans1;
+	string newAns = "";
+	for(int i=0;i<=maxIndex;i++)
+	{
+		if(cnt[i]==0)
+			newAns = "0"+newAns;
+		else
+			newAns = "1"+newAns;
+	}
+	long long temp = cnt[maxIndex+1];
+	while(temp!=0)
+	{
+		int t = temp%2;
+		if(t==1)
+			newAns = "1"+newAns;
+		else
+			newAns = "0"+newAns;
+		temp/=2;
+	}
+	cout<<newAns<<endl;
 }
