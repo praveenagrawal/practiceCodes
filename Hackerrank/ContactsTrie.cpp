@@ -15,7 +15,7 @@ struct node
     int leaves = 0;
 };
 
-void addName(node *root, string name)
+void addName(node* &root, string name)
 {
     int n = name.size();
     node *temp = root;
@@ -32,7 +32,7 @@ void addName(node *root, string name)
     temp->isLeaf = 1;
 }
 
-int findPartial(node *root, string partial)
+int findPartial(node* &root, string partial)
 {
     if(root==NULL)
         return 0;
