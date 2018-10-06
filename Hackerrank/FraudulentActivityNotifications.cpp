@@ -13,7 +13,7 @@ double findMed(vector <int> stash, int d){
                 return i;
             }
             else{
-                if(stash[i]>1)
+                if (stash[i] > 1 && count>d/2.0)
                     return i;
                 else{
                     for(int j=i+1;j<200;j++){
